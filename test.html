@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tes Kepribadian - Halaman Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #e0f7f9; margin: 0; }
+        .container { width: 60%; margin: auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .header { padding: 20px; background-color: #b0e0e6; display: flex; align-items: center; justify-content: center; border-radius: 8px 8px 0 0; }
+        .header img { width: 50px; margin-right: 10px; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: bold; color: #fcfdfd; }
+        .question { margin: 20px 0; }
+        .options div { background-color: #d3d3d3; padding: 10px; margin: 5px 0; text-align: center; cursor: pointer; border-radius: 5px; }
+        .options div:hover { background-color: #b0e0e6; }
+        .submit-button { text-align: center; margin: 30px 0; font-weight: bold; }
+        .submit-button button, .finish-button button { background-color: #b0e0e6; padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; font-weight: bold; }
+        .finish-button { display: none; text-align: center; margin: 20px 0; }
+        .result { margin-top: 30px; padding: 20px; background-color: #f0f8ff; text-align: center; font-weight: bold; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="LOGO.png" alt="Logo">
+            <h1>TES KEPRIBADIAN GRATIS</h1>
+        </div>
+        
+        <!-- Pertanyaan Kepribadian -->
+        <div id="questions"></div>
+
+        <div class="submit-button">
+            <button onclick="calculatePersonality()">KIRIM JAWABAN</button>
+        </div>
+        
+        <div id="result" class="result" style="display: none;"></div>
+
+        <div class="finish-button">
+            <button onclick="finishTest()">SELESAI</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { text: "Saya merasa terisi energi saat berada dalam keramaian atau di antara banyak orang.", type: 'EI' },
+            { text: "Dalam membuat keputusan, saya lebih mempertimbangkan bagaimana perasaan orang lain daripada menggunakan logika.", type: 'TF' },
+            { text: "Saya lebih suka memiliki jadwal terperinci yang diatur terlebih dahulu daripada bersikap spontan.", type: 'JP' },
+            { text: "Saya lebih tertarik pada ide-ide abstrak dan konsep yang tidak biasa daripada fakta-fakta praktis.", type: 'SN' },
+            { text: "Saya cenderung fokus pada saat ini dan detail kecil daripada pada gambaran besar.", type: 'SN' },
+            { text: "Saya merasa mudah untuk memahami perasaan orang lain.", type: 'TF' },
+            { text: "Saya lebih nyaman mengambil keputusan setelah mempertimbangkan semua fakta.", type: 'JP' },
+            { text: "Saya lebih suka bekerja sendiri daripada dalam kelompok.", type: 'EI' },
+            { text: "Saya lebih memilih spontanitas daripada perencanaan dalam aktivitas sehari-hari.", type: 'JP' },
+            { text: "Saya merasa bahwa emosi orang lain sangat memengaruhi saya.", type: 'TF' }
+        ];
+
+        const scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+
+        function renderQuestions() {
+            const questionsContainer = document.getElementById("questions");
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `<p>${index + 1}. ${question.text}</p>`;
+                const optionsDiv = document.createElement("div");
+                optionsDiv.classList.add("options");
+                const choices = [
+                    { text: 'Setuju', value: 1 },
+                    { text: 'Netral', value: 0 },
+                    { text: 'Tidak Setuju', value: -1 }
+                ];
+                choices.forEach(choice => {
+                    const optionDiv = document.createElement("div");
+                    optionDiv.innerText = choice.text;
+                    optionDiv.onclick = () => selectAnswer(index, choice.value);
+                    optionsDiv.appendChild(optionDiv);
+                });
+                questionDiv.appendChild(optionsDiv);
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        const answers = [];
+
+        function selectAnswer(questionIndex, choiceValue) {
+            const question = questions[questionIndex];
+            answers[questionIndex] = choiceValue; // Simpan nilai pilihan pengguna
+            if (choiceValue === 1) {
+                scores[question.type.charAt(0)]++; // Skor untuk Setuju
+            } else if (choiceValue === -1) {
+                scores[question.type.charAt(1)]++; // Skor untuk Tidak Setuju
+            }
+            highlightSelectedOption(questionIndex, choiceValue);
+        }
+
+        function highlightSelectedOption(questionIndex, choiceValue) {
+            const options = document.querySelectorAll(`.question:nth-child(${questionIndex + 1}) .options div`);
+            options.forEach((option, index) => {
+                if (choiceValue === 1 && index === 0) {
+                    option.style.backgroundColor = '#b0e0e6'; // Setuju
+                } else if (choiceValue === 0 && index === 1) {
+                    option.style.backgroundColor = '#b0e0e6'; // Netral
+                } else if (choiceValue === -1 && index === 2) {
+                    option.style.backgroundColor = '#b0e0e6'; // Tidak Setuju
+                } else {
+                    option.style.backgroundColor = '#d3d3d3';
+                }
+            });
+        }
+
+        function calculatePersonality() {
+            let personality = '';
+            personality += scores.E > scores.I ? 'E' : 'I';
+            personality += scores.S > scores.N ? 'S' : 'N';
+            personality += scores.T > scores.F ? 'T' : 'F';
+            personality += scores.J > scores.P ? 'J' : 'P';
+            displayResult(personality);
+        }
+
+        function getPersonalityDescription(personality) {
+            const descriptions = {
+                "ESTJ": "ESTJ adalah tipe yang terorganisir, praktis, dan decisif. Mereka cenderung memimpin dan mengelola dengan efisiensi.",
+                "ESTP": "ESTP adalah tipe yang berani, energik, dan tajam. Mereka menyukai tantangan dan pengalaman baru.",
+                "ESFJ": "ESFJ adalah tipe yang peduli, sosial, dan membantu. Mereka sangat menghargai hubungan dan harmoni dalam kelompok.",
+                "ESFP": "ESFP adalah tipe yang ceria, antusias, dan spontan. Mereka menikmati hidup dan sering menjadi pusat perhatian.",
+                "ENTJ": "ENTJ adalah tipe yang strategis, tegas, dan berjiwa pemimpin. Mereka berorientasi pada pencapaian dan efisiensi.",
+                "ENTP": "ENTP adalah tipe yang inovatif, penasaran, dan cerdik. Mereka suka menjelajahi ide-ide baru dan solusi kreatif.",
+                "ENFJ": "ENFJ adalah tipe yang karismatik, inspiratif, dan empatik. Mereka mampu memotivasi dan memahami perasaan orang lain.",
+                "ENFP": "ENFP adalah tipe yang kreatif, hidup, dan spontan. Mereka memiliki banyak ide dan antusiasme untuk menjalani kehidupan.",
+                "ISTJ": "ISTJ adalah tipe yang bertanggung jawab, disiplin, dan teliti. Mereka menghargai tradisi dan stabilitas.",
+                "ISTP": "ISTP adalah tipe yang praktis, logis, dan cenderung menyukai tantangan. Mereka menyukai kebebasan dan petualangan.",
+                "ISFJ": "ISFJ adalah tipe yang setia, perhatian, dan cenderung melindungi orang-orang terdekat.",
+                "ISFP": "ISFP adalah tipe yang peka, artistik, dan menyukai kebebasan. Mereka menghargai pengalaman pribadi dan keindahan.",
+                "INTJ": "INTJ adalah tipe yang strategis, analitis, dan mandiri. Mereka memiliki visi jangka panjang dan fokus pada pencapaian.",
+                "INTP": "INTP adalah tipe yang intelektual, inovatif, dan berpikir kritis. Mereka suka mengeksplorasi ide-ide dan konsep-konsep baru.",
+                "INFJ": "INFJ adalah tipe yang idealis, intuitif, dan peka. Mereka memiliki wawasan yang mendalam tentang orang lain dan situasi.",
+                "INFP": "INFP adalah tipe yang idealis, peka, dan cenderung mencari makna dalam hidup."
+            };
+            return descriptions[personality] || "Deskripsi tidak tersedia.";
+        }
+
+        function displayResult(personality) {
+            const resultDiv = document.getElementById("result");
+            resultDiv.style.display = "block";
+            resultDiv.innerText = `Tipe Kepribadian Anda: ${personality} - ${getPersonalityDescription(personality)}`;
+            document.querySelector(".submit-button").style.display = "none"; // Sembunyikan tombol kirim
+            document.querySelector(".finish-button").style.display = "block"; // Tampilkan tombol selesai
+        }
+
+        function finishTest() {
+            window.history.back(); // Kembali ke halaman sebelumnya
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>

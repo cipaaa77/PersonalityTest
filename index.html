@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tes Kepribadian Gratis</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #e0f7fa; 
+    }
+    .header {
+      background-color: #b0e0e6; 
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: white; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+    }
+    .header img {
+      position: absolute;
+      left: 20px;
+      width: 50px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 32px; 
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+      letter-spacing: 1px; 
+    }
+    .main-content {
+      position: relative;
+      text-align: center;
+      color: white;
+    }
+    .main-content img {
+      width: 100%;
+      height: auto;
+      transition: transform 0.5s ease; 
+    }
+    .main-content img:hover {
+      transform: scale(1.05); 
+    }
+    .main-content .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6); 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0; 
+      transition: opacity 0.5s ease; 
+    }
+    .main-content:hover .overlay {
+      opacity: 1; 
+    }
+    .main-content .overlay h2 {
+      font-size: 48px;
+      margin: 0;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.5s; 
+    }
+    .main-content .overlay p {
+      font-size: 20px; 
+      margin: 20px 0;
+      text-align: center;
+      padding: 0 20px; 
+      animation: fadeIn 0.5s; 
+    }
+    .main-content .overlay .button {
+      background-color: #ffab00; 
+      color: black;
+      padding: 15px 30px;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 5px;
+      transition: background-color 0.3s; 
+      animation: popIn 0.5s; 
+    }
+    .main-content .overlay .button:hover {
+      background-color: #ff8f00; 
+    }
+
+    /* Animasi */
+    @keyframes slideIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes popIn {
+      from {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    @keyframes textFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Media Queries untuk  Responsif */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 24px; 
+      }
+      .main-content .overlay h2 {
+        font-size: 32px; 
+      }
+      .main-content .overlay p {
+        font-size: 18px; 
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="LOGO.png" alt="Logo">
+    <h1>TES KEPRIBADIAN GRATIS</h1>
+  </div>
+  <div class="main-content">
+    <img src="https://storage.googleapis.com/a1aa/image/uVfqiX8BeYlw9EfK30Wncf4bF0HPdIeSSOvbFFIUqiWPhLXdC.jpg" alt="Group of people laughing and talking">
+    <div class="overlay">
+      <h2>CEK KEPRIBADIAN KAMU SEKARANG!</h2>
+      <p class="animated-text">Penasaran dengan tipe kepribadian Anda? Mulai tesnya sekarang dan temukan jawaban yang Anda cari!</p>
+      <a class="button" href="test.html">MULAI TEST</a>
+    </div>
+  </div>
+
+  <script>
+    // Menambahkan animasi pada teks di body
+    document.addEventListener('DOMContentLoaded', function() {
+      const animatedText = document.querySelector('.animated-text');
+      animatedText.style.animation = 'textFadeIn 1s forwards'; 
+    });
+
+    // Script untuk interaktivitas 
+    document.querySelector('.button').addEventListener('click', function() {
+      alert('Anda akan diarahkan ke halaman tes kepribadian!');
+    });
+  </script>
+</body>
+</html>
